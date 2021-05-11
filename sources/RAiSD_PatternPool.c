@@ -986,24 +986,35 @@ int RSDPatternPool_pushSNP (RSDPatternPool_t * RSDPatternPool, RSDChunk_t * RSDC
 			}
 
 #else
+			double bestMatch = 0;
+			int bestI = 0;
+			double threshold = 1.0;
 			for(i=0;i<RSDPatternPool->dataSize;i++) 
 			{
-				if(!snpv_cmp(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize))
-				{	
-					match=1;
-					break;
+				// INSERT CODE HERE HIDDE
+				if (1)
+				{
+					double match1 = snpv_cmp_range(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize);
+					double match2 = isnpv_cmp_range(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize, (int)numberOfSamples);
+					if ((match1 > 0.9) || (match2 > 0.9))
+					{
+						match = 1;
+						break;
+					}
+				}
+				else
+				{
+					int match1 = snpv_cmp(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize);
+					int match2 = isnpv_cmp(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize, (int)numberOfSamples);
+					if ((match1 == 0) || (match2 == 0))
+					{
+						match = 1;
+						break;
+					}
 				}
 			}
-
-			if(match==0)
-			for(i=0;i<RSDPatternPool->dataSize;i++) 
-			{
-				if(!isnpv_cmp(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize, (int)numberOfSamples))
-				{	
-					match=1;
-					break;
-				}	
-			}
+			
+			
 #endif
 #endif
 		}
