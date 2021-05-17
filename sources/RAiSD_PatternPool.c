@@ -991,12 +991,27 @@ int RSDPatternPool_pushSNP (RSDPatternPool_t * RSDPatternPool, RSDChunk_t * RSDC
 			double threshold = 1.0;
 			for(i=0;i<RSDPatternPool->dataSize;i++) 
 			{
-				// INSERT CODE HERE HIDDE
 				if (1)
 				{
-					double match1 = snpv_cmp_range(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize);
-					double match2 = isnpv_cmp_range(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize, (int)numberOfSamples);
-					if ((match1 > 0.9) || (match2 > 0.9))
+					double match = snpv_cmp_range(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize, (int)numberOfSamples);
+					int match1 = snpv_cmp(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize);
+					int match2 = isnpv_cmp(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize, (int)numberOfSamples);
+					if ((match1 == 0) || (match2 == 0))
+					{
+						FILE *matchFile;
+						matchFile = fopen("matching.txt", "a");
+						fprintf(matchFile, "%f\n", match);
+						fclose(matchFile);
+					}
+					else
+					{
+						FILE *noMatchFile;
+						noMatchFile = fopen("notMatching.txt", "a");
+						fprintf(noMatchFile, "%f\n", match);
+						fclose(noMatchFile);
+
+					}
+					if (match > 0.995)
 					{
 						match = 1;
 						break;

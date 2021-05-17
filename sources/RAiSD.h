@@ -165,7 +165,7 @@ int			snpv_cmp_cross_masks		(uint64_t * A, uint64_t * B, uint64_t * mA, uint64_t
 int			isnpv_cmp_cross_masks		(uint64_t * A, uint64_t * B, uint64_t * mA, uint64_t * mB, int size);
 int			isnpv_cmp 			(uint64_t * A, uint64_t * B, int size, int numberOfSamples);
 int			isnpv_cmp_with_mask		(uint64_t * A, uint64_t * B, uint64_t * mA, uint64_t * mB, int size, int numberOfSamples);
-double snpv_cmp_range (uint64_t * A, uint64_t * B, int size);
+double snpv_cmp_range  (uint64_t * A, uint64_t * B, int size, int numberOfSamples);
 double isnpv_cmp_range (uint64_t * A, uint64_t * B, int size, int numberOfSamples);
 int			getGXLocation_vcf 		(char * string, char * GX);
 int 			getGXData_vcf 			(char * string, int location, char * data);
