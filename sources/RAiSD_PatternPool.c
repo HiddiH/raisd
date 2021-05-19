@@ -702,7 +702,26 @@ int RSDPatternPool_pushSNP (RSDPatternPool_t * RSDPatternPool, RSDChunk_t * RSDC
 
 	if(RSDPatternPool->incomingSitePosition<=-1.0)
 		return 0;
-
+	// 
+	int count0 = 0, count1 = 0;
+	for (int j = 0; j < numberOfSamples; ++j)
+	{
+		if (!(RSDPatternPool->incomingSite[j] == '0' || RSDPatternPool->incomingSite[j] == '1'))
+		{
+			return 0;
+		}
+		if (RSDPatternPool->incomingSite[j] == '0')
+		{
+			count0++;
+		}
+		else
+		{
+			count1++;
+		}
+	}
+	assert(count0+count1==numberOfSamples);
+	assert(count0!=0);
+	assert(count1!=0);
 	int i, j, lcnt=0, acnt=0, vcnt=0, avcnt=0, match=0;
 
 	//init compact
@@ -993,25 +1012,25 @@ int RSDPatternPool_pushSNP (RSDPatternPool_t * RSDPatternPool, RSDChunk_t * RSDC
 			{
 				if (1)
 				{
-					double match = snpv_cmp_range(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize, (int)numberOfSamples);
+					double matchtemp = snpv_cmp_range(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize, (int)numberOfSamples);
 					int match1 = snpv_cmp(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize);
 					int match2 = isnpv_cmp(&(RSDPatternPool->poolData[i*RSDPatternPool->patternSize]), RSDPatternPool->incomingSiteCompact, RSDPatternPool->patternSize, (int)numberOfSamples);
 					if ((match1 == 0) || (match2 == 0))
 					{
 						FILE *matchFile;
 						matchFile = fopen("matching.txt", "a");
-						fprintf(matchFile, "%f\n", match);
+						fprintf(matchFile, "%f\n", matchtemp);
 						fclose(matchFile);
 					}
 					else
 					{
 						FILE *noMatchFile;
 						noMatchFile = fopen("notMatching.txt", "a");
-						fprintf(noMatchFile, "%f\n", match);
+						fprintf(noMatchFile, "%f\n", matchtemp);
 						fclose(noMatchFile);
 
 					}
-					if (match > 0.995)
+					if (matchtemp > 0.995)
 					{
 						match = 1;
 						break;
