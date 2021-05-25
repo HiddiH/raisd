@@ -3029,7 +3029,7 @@ void RSDMuStat_output2BufferFull (RSDMuStat_t * RSDMuStat, double windowCenter, 
 	RSDMuStat->buffer6Data[RSDMuStat->currentScoreIndex]=mu;
 }
 
-inline void RSDMuStat_storeOutputConfigure (RSDCommandLine_t * RSDCommandLine)
+ void RSDMuStat_storeOutputConfigure (RSDCommandLine_t * RSDCommandLine)
 {
 	if(RSDCommandLine->gridSize==-1)
 	{
